@@ -1,6 +1,6 @@
-import cv2
 import sys
 import argparse
+import cv2
 
 import cv
 import cli
@@ -29,14 +29,14 @@ if __name__ == '__main__':
             continue
 
         frame = cv2.resize(frame, dsize=(1280, 720))
-        is_opened = cv.is_open_flop(frame)
+        IS_OPENED = cv.is_open_flop(frame)
 
-        if is_opened & (datastore.get_now_status() == datastore.Status.PRE_FLOP):
+        if IS_OPENED & (datastore.get_now_status() == datastore.Status.PRE_FLOP):
             if args.debug:
                 print("become_open_flop")
             stage.become_open_flop(cap.get(cv2.CAP_PROP_POS_MSEC))
 
-        if (is_opened is False) & (datastore.get_now_status() == datastore.Status.OPEN_FLOP):
+        if (IS_OPENED is False) & (datastore.get_now_status() == datastore.Status.OPEN_FLOP):
             if utils.is_check_early_close(cap.get(cv2.CAP_PROP_POS_MSEC)):
                 if args.debug:
                     print("early close")
@@ -46,7 +46,10 @@ if __name__ == '__main__':
             cli.print_timer()
             stage.next_game()
 
-        if is_opened & (datastore.get_now_status() == datastore.Status.OPEN_FLOP) & (len(datastore.get_players()) == 0):
+        if (IS_OPENED
+                & (datastore.get_now_status() == datastore.Status.OPEN_FLOP)
+                & (len(datastore.get_players()) == 0)
+        ):
             if args.debug:
                 print("not yet load players. become to load players")
 

@@ -1,8 +1,8 @@
-import cv2
+import numpy
 import pytesseract
 
 
-def ocr_on_frame(frame_data: cv2.Mat):
+def ocr_on_frame(frame_data: numpy.ndarray) -> str:
     """Do OCR on frame data
     Args:
         frame_data: frame data
@@ -13,7 +13,7 @@ def ocr_on_frame(frame_data: cv2.Mat):
     return text
 
 
-def is_open_flop(frame_data: cv2.Mat) -> bool:
+def is_open_flop(frame_data: numpy.ndarray) -> bool:
     board_area = frame_data[720 - 67:720 - 28, 1280 - 220:1280 - 30]
     # print(board_area.shape)
     check_area = board_area[5:10, 5:10]
@@ -40,7 +40,7 @@ def is_open_flop(frame_data: cv2.Mat) -> bool:
 #     return img_mask
 
 
-def get_players_frame(frame_data: cv2.Mat) -> list:
+def get_players_frame(frame_data: numpy.ndarray) -> list:
     p = []
 
     hand_area = frame_data[38:300, 22:286]

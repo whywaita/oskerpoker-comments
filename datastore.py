@@ -6,18 +6,18 @@ class Status(enum.Enum):
     OPEN_FLOP = 'OPEN_FLOP'
 
 
-PLAYERS = list()
+PLAYERS = []
 NOW_STATUS = Status.PRE_FLOP
 FOUND_TIME = str()
 OPEN_FLOP_TIME = float()
 
 
 def reset_store_data():
-    global NOW_STATUS
-    global PLAYERS
-    global FOUND_TIME
+    global NOW_STATUS  # pylint: disable=global-statement
+    global PLAYERS  # pylint: disable=global-statement
+    global FOUND_TIME  # pylint: disable=global-statement
     NOW_STATUS = Status.PRE_FLOP
-    PLAYERS = list()
+    PLAYERS = []
     FOUND_TIME = str()
 
 
@@ -27,31 +27,28 @@ def reset_store_data():
 #     return 'PRE_FLOP'
 
 def set_now_status(status: Status):
-    global NOW_STATUS
+    global NOW_STATUS  # pylint: disable=global-statement
     NOW_STATUS = status
 
 
-def get_now_status() -> str:
-    global NOW_STATUS
+def get_now_status() -> Status:
     return NOW_STATUS
 
 
 def add_player(player_name: str):
-    global PLAYERS
+    global PLAYERS  # pylint: disable=global-variable-not-assigned
     if player_name not in PLAYERS:
         PLAYERS.append(player_name)
 
 
 def get_players() -> list:
-    global PLAYERS
     return PLAYERS
 
 
 def set_open_flop_time(time: float):
-    global OPEN_FLOP_TIME
+    global OPEN_FLOP_TIME  # pylint: disable=global-statement
     OPEN_FLOP_TIME = time
 
 
 def get_open_flop_time() -> float:
-    global OPEN_FLOP_TIME
     return OPEN_FLOP_TIME
