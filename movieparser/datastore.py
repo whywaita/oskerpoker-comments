@@ -1,9 +1,16 @@
 import enum
+import typing
 
 
 class Status(enum.Enum):
     PRE_FLOP = 'PRE_FLOP'
     OPEN_FLOP = 'OPEN_FLOP'
+
+
+class FlopTime:
+    def __init__(self, time: float, players: typing.List[str]):
+        self.time = time
+        self.players = players
 
 
 PLAYERS = []

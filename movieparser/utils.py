@@ -1,4 +1,4 @@
-import datastore
+import movieparser.datastore
 
 
 def sanitize_player_name(text: str) -> str:
@@ -34,5 +34,5 @@ def is_check_early_close(elapsed_time_ms: float) -> bool:
     VIDEOPOKERNET application light in the Flop area when the Flop is opened.
     But this illumination occurred in the early close. So we need to check.
     """
-    open_flop_time = datastore.get_open_flop_time()
+    open_flop_time = movieparser.datastore.get_open_flop_time()
     return (elapsed_time_ms - open_flop_time) < 5000
