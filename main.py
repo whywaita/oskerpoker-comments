@@ -3,8 +3,12 @@ import argparse
 import movieparser
 
 
-def command_parse_movie(args: argparse.Namespace):
-    flop_time_list = movieparser.parse_movie(args.file_path, args.delay, args.window_name, args.debug)
+def command_parse_movie(input_args: argparse.Namespace):
+    flop_time_list = movieparser.parse_movie(
+        input_args.file_path,
+        input_args.delay,
+        input_args.window_name,
+        input_args.debug)
     movieparser.print_timer_from_list(flop_time_list)
 
 
