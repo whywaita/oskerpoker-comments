@@ -20,7 +20,6 @@ from movieparser.stage import become_open_flop, next_game
 def parse_movie(file_path: str, delay=1, window_name='frame', debug=False) -> typing.List[FlopTime]:
     flop_time_list = []
 
-    print(file_path)
     cap = cv2.VideoCapture(file_path)
     if not cap.isOpened():
         sys.exit()

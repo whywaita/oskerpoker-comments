@@ -1,6 +1,11 @@
+import ast
 import argparse
+import re
+import sys
+import typing
 
 import movieparser
+import player
 
 
 def command_parse_movie(input_args: argparse.Namespace):
@@ -10,6 +15,48 @@ def command_parse_movie(input_args: argparse.Namespace):
         input_args.window_name,
         input_args.debug)
     movieparser.print_timer_from_list(flop_time_list)
+
+
+def command_get_player_name(input_args: argparse.Namespace):
+    raw_data = sys.stdin.read()
+    player_name = player.generate_player_list(raw_data)
+    print(player_name)
+
+
+def command_autofix_playername(input_args: argparse.Namespace):
+    correct_player_name = input_args.correct_playername
+
+    raw_data = sys.stdin.read()
+    # process per line
+    for line in raw_data.split('\n'):
+        if not line:
+            continue
+        line = line.strip()
+        # 00:00:00 FOO vs BAR
+        for value in line.split(' '):
+            value = value.strip()
+            if re.match(r'^\d{2}:\d{2}:\d{2}$', value):
+                # timestamp don't need to fix
+                continue
+            if re.match(r'^vs$', value):
+                # vs don't need to fix
+                continue
+            found_name = player.get_correct_player_name(correct_player_name, value)
+            if value != found_name:
+                print(f'{value} -> {found_name}')
+                raw_data = raw_data.replace(value, found_name)
+
+    print(raw_data)
+
+
+def parse_str_list(input_str: str) -> typing.List[str]:
+    try:
+        input_list = ast.literal_eval(input_str)
+        if not isinstance(input_list, list) or not all(isinstance(i, str) for i in input_list):
+            raise argparse.ArgumentTypeError("Input should be a list of strings.")
+        return input_list
+    except ValueError:
+        raise argparse.ArgumentTypeError("Input should be a list of strings.")
 
 
 if __name__ == '__main__':
@@ -22,6 +69,13 @@ if __name__ == '__main__':
     parser_parse_movie.add_argument('--window_name', type=str, default='frame')
     parser_parse_movie.add_argument('--debug', type=bool, default=False)
     parser_parse_movie.set_defaults(handler=command_parse_movie)
+
+    parser_get_player_name = subparsers.add_parser('get-player-name')
+    parser_get_player_name.set_defaults(handler=command_get_player_name)
+
+    parser_autofix_player_name = subparsers.add_parser('autofix-player-name')
+    parser_autofix_player_name.add_argument('--correct-playername', type=parse_str_list, required=True)
+    parser_autofix_player_name.set_defaults(handler=command_autofix_playername)
 
     args = parser.parse_args()
     if hasattr(args, 'handler'):
