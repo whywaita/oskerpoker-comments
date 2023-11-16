@@ -44,6 +44,14 @@ $ $(command of parse-movie) | poetry run python3 main.py autofix-player-name --c
 01:59:20 BAZ vs BAR
 ```
 
+### launch-webserver
+
+`launch-webserver` launch web server (WebUI).
+
+```bash
+$ poetry run python3 main.py launch-webserver
+```
+
 ## Restrictions
 
 - Only support Heads up in post-flop.
