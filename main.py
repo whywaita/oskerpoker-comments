@@ -2,6 +2,7 @@ import ast
 import argparse
 import sys
 import typing
+import os
 import concurrent.futures
 
 import movieparser
@@ -36,7 +37,8 @@ def command_autofix_player_name(input_args: argparse.Namespace):
 def command_launch_webserver(input_args: argparse.Namespace):  # pylint: disable=unused-argument
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
     executor.submit(web.web.execute_queue)
-    web.app.run(port=5050)
+    port = os.environ.get('PORT', 5050)
+    web.app.run(port=port)
 
 
 def parse_str_list(input_str: str) -> typing.List[str]:
