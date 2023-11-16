@@ -36,7 +36,7 @@ $ $(command of parse-movie) | poetry run python3 main.py get-playe-rname
 `autofix-playername` fix player name from output of `parse-movie`.
 
 ```bash
-$ $(command of parse-movie) | poetry run python3 main.py autofix-player-name --correct-playername '["FOO", "BAR", "BAZ"]'
+$ $(command of parse-movie) | poetry run python3 main.py autofix-player-name --correct-player-name '["FOO", "BAR", "BAZ"]'
 01:50:03 FOO vs BAR
 01:51:11 BAZ vs BAX
 01:53:42 BAX vs FOO

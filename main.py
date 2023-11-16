@@ -23,30 +23,13 @@ def command_get_player_name(input_args: argparse.Namespace):
     print(player_name)
 
 
-def command_autofix_playername(input_args: argparse.Namespace):
-    correct_player_name = input_args.correct_playername
+def command_autofix_player_name(input_args: argparse.Namespace):
+    correct_player_name = input_args.correct_player_name
 
     raw_data = sys.stdin.read()
-    # process per line
-    for line in raw_data.split('\n'):
-        if not line:
-            continue
-        line = line.strip()
-        # 00:00:00 FOO vs BAR
-        for value in line.split(' '):
-            value = value.strip()
-            if re.match(r'^\d{2}:\d{2}:\d{2}$', value):
-                # timestamp don't need to fix
-                continue
-            if re.match(r'^vs$', value):
-                # vs don't need to fix
-                continue
-            found_name = player.get_correct_player_name(correct_player_name, value)
-            if value != found_name:
-                print(f'{value} -> {found_name}')
-                raw_data = raw_data.replace(value, found_name)
+    fixed = player.autofix_timestamp_comment(raw_data, correct_player_name)
 
-    print(raw_data)
+    print(fixed)
 
 
 def parse_str_list(input_str: str) -> typing.List[str]:
@@ -74,8 +57,8 @@ if __name__ == '__main__':
     parser_get_player_name.set_defaults(handler=command_get_player_name)
 
     parser_autofix_player_name = subparsers.add_parser('autofix-player-name')
-    parser_autofix_player_name.add_argument('--correct-playername', type=parse_str_list, required=True)
-    parser_autofix_player_name.set_defaults(handler=command_autofix_playername)
+    parser_autofix_player_name.add_argument('--correct-player-name', type=parse_str_list, required=True)
+    parser_autofix_player_name.set_defaults(handler=command_autofix_player_name)
 
     args = parser.parse_args()
     if hasattr(args, 'handler'):
