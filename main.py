@@ -47,6 +47,7 @@ if __name__ == '__main__':
     subparsers = parser.add_subparsers()
 
     parser_parse_movie = subparsers.add_parser('parse-movie')
+    parser_parse_movie.description = 'Parse movie and generate timestamp comment.'
     parser_parse_movie.add_argument('--file_path', type=str, required=True)
     parser_parse_movie.add_argument('--delay', type=int, default=1)
     parser_parse_movie.add_argument('--window_name', type=str, default='frame')
@@ -54,9 +55,11 @@ if __name__ == '__main__':
     parser_parse_movie.set_defaults(handler=command_parse_movie)
 
     parser_get_player_name = subparsers.add_parser('get-player-name')
+    parser_get_player_name.description = 'Get player name from output of `parse-movie`.'
     parser_get_player_name.set_defaults(handler=command_get_player_name)
 
     parser_autofix_player_name = subparsers.add_parser('autofix-player-name')
+    parser_autofix_player_name.description = 'Autofix player name from output of `parse-movie`.'
     parser_autofix_player_name.add_argument('--correct-player-name', type=parse_str_list, required=True)
     parser_autofix_player_name.set_defaults(handler=command_autofix_player_name)
 
