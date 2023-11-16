@@ -1,14 +1,18 @@
 import typing
-import cv2
 import sys
+import cv2
 
-from movieparser.cli import print_timer, get_stored_flop_time, print_timer_from_list
+from movieparser.cli import (
+    print_timer,
+    get_stored_flop_time,
+    print_timer_from_list,
+    get_timestamp_comment_from_list
+)
 from movieparser.cv import is_open_flop, get_players_frame
 from movieparser.datastore import (
     Status,
     FlopTime,
     get_now_status,
-    get_open_flop_time,
     get_open_flop_time,
     get_players,
     add_player
@@ -18,6 +22,7 @@ from movieparser.stage import become_open_flop, next_game
 
 
 def parse_movie(file_path: str, delay=1, window_name='frame', debug=False) -> typing.List[FlopTime]:
+    # pylint: disable=too-many-branches
     flop_time_list = []
 
     cap = cv2.VideoCapture(file_path)
