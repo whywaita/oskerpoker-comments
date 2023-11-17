@@ -38,6 +38,9 @@ def enqueue():
         return 'Invalid method'
 
     movie_id = request.form['movie_id']
+    if not movie_id:
+        flash('Movie ID is required', 'error')
+        return redirect(url_for('index'))
     u = f"https://www.youtube.com/watch?v={movie_id}"
 
     with yt_dlp.YoutubeDL({}) as ydl:
