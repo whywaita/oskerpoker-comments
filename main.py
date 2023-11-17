@@ -38,7 +38,7 @@ def command_launch_webserver(input_args: argparse.Namespace):  # pylint: disable
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
     executor.submit(web.web.execute_queue)
     port = os.environ.get('PORT', 5050)
-    web.app.run(port=port)
+    web.app.run(port=port, host='0.0.0.0')
 
 
 def parse_str_list(input_str: str) -> typing.List[str]:
