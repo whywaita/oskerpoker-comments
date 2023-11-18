@@ -12,9 +12,12 @@ from web.models import db, Queue, Movie
 import movieparser
 
 app = Flask(__name__)
-app.secret_key = 'your secret key'
+secret_key = os.environ.get('SECRET_KEY')
+if not secret_key:
+    raise Exception('SECRET_KEY is not set')
+app.secret_key = secret_key
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///queue.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL', 'sqlite:///queue.db')
 # app.config["SQLALCHEMY_ECHO"] = True
 db.init_app(app)
 
