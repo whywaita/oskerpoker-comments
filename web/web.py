@@ -121,7 +121,7 @@ def process_queue():
                 }
                 # Update queue status to processing
                 print(f"Processing start {movie_id}")
-                q.status = 'processing'
+                q.status = 'processing (downloading)'
                 db.session.commit()
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([u])
@@ -129,6 +129,9 @@ def process_queue():
                     video_title = info_dict.get('title', None)
                     file_path = f'tmp/{movie_id}.mp4'
                     print(f"Downloaded {video_title}")
+
+                    q.status = 'processing (parsing)'
+                    db.session.commit()
 
                     flop_time_list = movieparser.parse_movie(file_path)
                     comment = movieparser.get_timestamp_comment_from_list(flop_time_list)
