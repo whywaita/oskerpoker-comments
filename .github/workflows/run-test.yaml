@@ -23,4 +23,4 @@ jobs:
           run: |
             poetry install --no-interaction
         - name: Run --help
-          run: poetry run python main.py --help
+          run: SECRET_KEY="foobar" poetry run python main.py --help
