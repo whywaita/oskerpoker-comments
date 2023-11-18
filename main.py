@@ -36,7 +36,7 @@ def command_autofix_player_name(input_args: argparse.Namespace):
 
 def command_launch_webserver(input_args: argparse.Namespace):  # pylint: disable=unused-argument
     executor = concurrent.futures.ProcessPoolExecutor(max_workers=1)
-    executor.submit(web.web.execute_queue)
+    executor.submit(web.processor.execute_queue)
     port = os.environ.get('PORT', 5050)
     web.app.run(port=port, host='0.0.0.0')
 
