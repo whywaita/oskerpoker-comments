@@ -1,5 +1,7 @@
 import time
+import typing
 import os
+import re
 
 import sqlalchemy.exc
 from flask import Flask, request, redirect, url_for, render_template, flash
@@ -25,9 +27,26 @@ with app.app_context():
 def index():
     queue = db.session.query(Queue).order_by(Queue.id).limit(5).all()
     movie = db.session.query(Movie).order_by(Movie.id.desc()).limit(5).all()
-    for m in movie:
-        m.parsed_text = m.parsed_text.replace('\n', '<br>')
+    movie = pretty_text(movie)
+
     return render_template('index.html', queue=queue, movie=movie)
+
+
+def pretty_text(ms: typing.List[Movie]) -> typing.List[Movie]:
+    for movie in ms:
+        pt = movie.parsed_text
+        prettied_text = ''
+        for line in pt.split('\n'):
+            if not line:
+                continue
+            timestamp = re.match(r'(\d+:\d+:\d+)', line).group()
+            players = line.removeprefix(timestamp).strip()
+            h, m, s = map(int, timestamp.split(':'))
+            timestamp_second = h * 3600 + m * 60 + s
+            link = f"https://www.youtube.com/watch?v={movie.movie_id}&t={timestamp_second}s"
+            prettied_text += f'<a href="{link}">{timestamp}</a> {players}<br>'
+        movie.parsed_text = prettied_text
+    return ms
 
 
 @app.route('/enqueue', methods=['POST'])
