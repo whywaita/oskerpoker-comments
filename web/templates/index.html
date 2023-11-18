@@ -54,7 +54,7 @@
         <tbody>
             <tr>
             <th scope="row">{{ loop.index }}</th>
-            <td>{{ q.movie_id }}</td>
+            <td><a href="https://www.youtube.com/watch?v={{ q.movie_id }}">{{ q.movie_id }}</a></td>
             <td>{{ q.status }}</td>
             </tr>
         </tbody>
@@ -79,7 +79,7 @@
         <tbody>
             <tr>
             <td>{{ m.movie_id }}</td>
-            <td>{{ m.title }}</td>
+            <td><a href="https://www.youtube.com/watch?v={{ m.movie_id }}">{{ m.title }}</a></td>
             <td>{{ m.parsed_text | safe }}</td>
             </tr>
         </tbody>
