@@ -94,11 +94,11 @@ def process_queue():
 
                 movie_id = q.movie_id
                 u = f"https://www.youtube.com/watch?v={movie_id}"
-                print(u)
                 ydl_opts = {
                     'outtmpl': 'tmp/%(id)s.%(ext)s',
                 }
                 # Update queue status to processing
+                print(f"Processing start {movie_id}")
                 q.Status = 'processing'
                 db.session.commit()
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
