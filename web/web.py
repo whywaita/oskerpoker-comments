@@ -54,6 +54,7 @@ def enqueue():
                 return redirect(url_for('index'))
             db_enqueue(db, movie_id)
             flash(f'Enqueued {video_title}', 'success')
+            print(f"Enqueued {video_title} {movie_id}")
         except yt_dlp.utils.YoutubeDLError:
             flash(f'{movie_id} is invalid movie id', 'error')
         except sqlalchemy.exc.SQLAlchemyError as e:
