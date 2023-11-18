@@ -11,6 +11,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y \
     && apt-get upgrade -y \
+    && apt-get install -y software-properties-common \
+    && apt-get update -y \
+    && apt-get install -y tesseract-ocr libtesseract-dev tesseract-ocr-eng \
     && apt-get install -y opencv-data libgl1-mesa-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
