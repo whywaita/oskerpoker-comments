@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime
 
 import sqlalchemy.exc
 import yt_dlp
@@ -42,6 +43,9 @@ def process_queue():
                     ydl.download([u])
                     info_dict = ydl.extract_info(u, download=False)
                     video_title = info_dict.get('title', None)
+                    upload_date = info_dict.get('upload_date', None)
+                    uploaded_at = f"{upload_date[0:4]}-{upload_date[4:6]}-{upload_date[6:8]}"
+                    uploaded_at_datetime = datetime.strptime(uploaded_at, '%Y-%m-%d')
                     file_path = f'tmp/{movie_id}.mp4'
                     print(f"Downloaded {video_title}")
 
@@ -53,7 +57,14 @@ def process_queue():
                     print(f"Parsed {video_title}")
                     print(comment)
 
-                    db.session.add(Movie(movie_id=movie_id, title=video_title, parsed_text=comment))
+                    db.session.add(
+                        Movie(
+                            movie_id=movie_id,
+                            title=video_title,
+                            parsed_text=comment,
+                            uploaded_at=uploaded_at_datetime
+                        )
+                    )
                     db.session.delete(q)
                     db.session.commit()
 

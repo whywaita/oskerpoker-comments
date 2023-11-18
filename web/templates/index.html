@@ -65,13 +65,15 @@
 
 {% if movie %}
 <div class="container">
-    <h3 class="d-flex">Movies</h3>
+    <h3 class="d-flex">Recent processed Movies</h3>
+    <a href="/movies">View All</a>
 
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">Movie ID</th>
           <th scope="col">Title</th>
+          <th scope="col">Uploaded</th>
           <th scope="col">Parsed Text</th>
         </tr>
       </thead>
@@ -80,6 +82,7 @@
             <tr>
             <td>{{ m.movie_id }}</td>
             <td><a href="https://www.youtube.com/watch?v={{ m.movie_id }}">{{ m.title }}</a></td>
+            <td>{{ m.uploaded_at }}</td>
             <td>{{ m.parsed_text | safe }}</td>
             </tr>
         </tbody>

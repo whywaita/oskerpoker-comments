@@ -91,3 +91,10 @@ def db_enqueue(db_session: SQLAlchemy, movie_id: str):
 
     db_session.session.add(Queue(movie_id=movie_id))
     db_session.session.commit()
+
+
+@app.route('/movies')
+def movies():
+    ms = db.session.query(Movie).order_by(Movie.uploaded_at.desc()).all()
+    ms = pretty_text(ms)
+    return render_template('movies.html', movie=ms)
