@@ -99,7 +99,7 @@ def process_queue():
                 }
                 # Update queue status to processing
                 print(f"Processing start {movie_id}")
-                q.Status = 'processing'
+                q.status = 'processing'
                 db.session.commit()
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([u])
@@ -121,6 +121,6 @@ def process_queue():
                     os.remove(file_path)
             except (yt_dlp.utils.YoutubeDLError, sqlalchemy.exc.SQLAlchemyError) as e:
                 print(e)
-                q.Status = 'error'
+                q.status = 'error {e}'
                 db.session.commit()
                 continue
