@@ -1,6 +1,7 @@
 import typing
 import os
 import re
+import logging
 
 import sqlalchemy.exc
 from flask import Flask, request, redirect, url_for, render_template, flash
@@ -35,17 +36,26 @@ def index():
 
 def pretty_text(ms: typing.List[Movie]) -> typing.List[Movie]:
     for movie in ms:
-        pt = movie.parsed_text
-        prettied_text = ''
-        for line in pt.split('\n'):
-            if not line:
-                continue
-            timestamp = re.match(r'(\d+:\d+:\d+)', line).group()
-            players = line.removeprefix(timestamp).strip()
-            h, m, s = map(int, timestamp.split(':'))
-            timestamp_second = h * 3600 + m * 60 + s
-            link = f"https://www.youtube.com/watch?v={movie.movie_id}&t={timestamp_second}s"
-            prettied_text += f'<a href="{link}">{timestamp}</a> {players}<br>'
+        try:
+            pt = movie.parsed_text
+            prettied_text = ''
+            for line in pt.split('\n'):
+                if not line:
+                    continue
+                match = re.match(r'(\d+:\d+:\d+)', line)
+                if match:
+                    timestamp = match.group()
+                else:
+                    timestamp = '00:00:00'
+
+                players = line.removeprefix(timestamp).strip()
+                h, m, s = map(int, timestamp.split(':'))
+                timestamp_second = h * 3600 + m * 60 + s
+                link = f"https://www.youtube.com/watch?v={movie.movie_id}&t={timestamp_second}s"
+                prettied_text += f'<a href="{link}">{timestamp}</a> {players}<br>'
+        except AttributeError or ValueError or TypeError as e:
+            logging.warning(f'Failed to parse {movie.title}: {e}')
+            prettied_text = movie.parsed_text
         movie.parsed_text = prettied_text
     return ms
 
