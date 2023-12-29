@@ -1,6 +1,7 @@
 import typing
 import os
 import re
+import logging
 
 import sqlalchemy.exc
 from flask import Flask, request, redirect, url_for, render_template, flash
@@ -48,7 +49,7 @@ def pretty_text(ms: typing.List[Movie]) -> typing.List[Movie]:
                 link = f"https://www.youtube.com/watch?v={movie.movie_id}&t={timestamp_second}s"
                 prettied_text += f'<a href="{link}">{timestamp}</a> {players}<br>'
         except AttributeError:
-            print(f'Failed to parse {movie.title}')
+            logging.warning(f'Failed to parse {movie.title}')
             prettied_text = movie.parsed_text
         movie.parsed_text = prettied_text
     return ms
