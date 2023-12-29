@@ -42,14 +42,19 @@ def pretty_text(ms: typing.List[Movie]) -> typing.List[Movie]:
             for line in pt.split('\n'):
                 if not line:
                     continue
-                timestamp = re.match(r'(\d+:\d+:\d+)', line).group()
+                match = re.match(r'(\d+:\d+:\d+)', line)
+                if match:
+                    timestamp = match.group()
+                else:
+                    timestamp = '00:00:00'
+
                 players = line.removeprefix(timestamp).strip()
                 h, m, s = map(int, timestamp.split(':'))
                 timestamp_second = h * 3600 + m * 60 + s
                 link = f"https://www.youtube.com/watch?v={movie.movie_id}&t={timestamp_second}s"
                 prettied_text += f'<a href="{link}">{timestamp}</a> {players}<br>'
-        except AttributeError:
-            logging.warning(f'Failed to parse {movie.title}')
+        except AttributeError or ValueError or TypeError as e:
+            logging.warning(f'Failed to parse {movie.title}: {e}')
             prettied_text = movie.parsed_text
         movie.parsed_text = prettied_text
     return ms
