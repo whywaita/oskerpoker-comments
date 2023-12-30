@@ -1,0 +1,46 @@
+{% if movie %}
+<div class="container">
+    <h2 class="d-flex">Movies</h2>
+    <a href="/movies">View All</a>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Movie ID</th>
+          <th scope="col">Title</th>
+          <th scope="col">Uploaded</th>
+          <th scope="col">Parsed Text</th>
+        </tr>
+      </thead>
+      {% for m in movie %}
+        <tbody>
+            <tr>
+            <td>{{ m.movie_id }}</td>
+            <td><a href="https://www.youtube.com/watch?v={{ m.movie_id }}">{{ m.title }}</a></td>
+            <td>{{ m.uploaded_at }}</td>
+            <td>{{ m.parsed_text | safe }}</td>
+            </tr>
+        </tbody>
+      {% endfor %}
+    </table>
+</div>
+{% else %}
+<div class="container">
+    <h2 class="d-flex">Movies</h2>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Movie ID</th>
+          <th scope="col">Title</th>
+          <th scope="col">Uploaded</th>
+          <th scope="col">Parsed Text</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4">No movies found.</td>
+        </tr>
+      </tbody>
+    </table>
+{% endif %}
