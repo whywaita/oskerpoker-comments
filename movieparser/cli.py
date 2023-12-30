@@ -36,7 +36,7 @@ def print_timer_from_list(flop_times: typing.List[movieparser.datastore.FlopTime
 
 def get_stored_flop_time() -> movieparser.datastore.FlopTime:
     open_flop_time = movieparser.datastore.get_open_flop_time() - 1000
-    if open_flop_time >= 0:
+    if open_flop_time <= 0:
         open_flop_time = 0
 
     p = movieparser.datastore.get_players()
