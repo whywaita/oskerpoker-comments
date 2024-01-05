@@ -1,10 +1,11 @@
+import json
 import typing
 import os
 import re
 import logging
 
 import sqlalchemy.exc
-from flask import Flask, request, redirect, url_for, render_template, flash
+from flask import Flask, request, redirect, url_for, render_template, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import yt_dlp
 
@@ -108,3 +109,15 @@ def movies():
     ms = db.session.query(Movie).order_by(Movie.uploaded_at.desc()).all()
     ms = pretty_text(ms)
     return render_template('movies.html', movie=ms)
+
+
+@app.route('/api/movie')
+def api_movies():
+    ms = db.session.query(Movie).order_by(Movie.uploaded_at.desc()).all()
+    return jsonify([m.to_dict() for m in ms])
+
+
+@app.route('/api/queue')
+def api_queue():
+    qs = db.session.query(Queue).order_by(Queue.id).all()
+    return jsonify([q.to_dict() for q in qs])
